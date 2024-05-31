@@ -29,7 +29,7 @@
             </template>
           </base-input>
 
-          <base-button type="submit" :disabled="fetching">
+          <base-button type="submit" :disabled="isFetching">
             {{ buttonText }}
           </base-button>
         </form>
@@ -39,8 +39,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import { LocalStorageMixin } from "@/mixins/UtilityMixins.js";
-import API from "@/services/API.js";
 
 import BaseInput from "./BaseInput.vue";
 import BaseButton from "./BaseButton.vue";
@@ -69,6 +69,8 @@ export default {
   },
 
   computed: {
+    ...mapGetters(["isFetching", "postErrors"]),
+
     /**
      * Computed property to set the text of button. If data is being fetched
      * then set the text to 'Creating...' otherwise set it to 'Create'.
@@ -78,49 +80,12 @@ export default {
      * @returns {String}
      */
     buttonText() {
-      return this.fetching ? "Creating..." : "Create";
+      return this.isFetching ? "Creating..." : "Create";
     },
   },
 
   methods: {
-    /**
-     * Function to get a new post id.
-     * Since the create post api does not actually add a post in database,
-     * it will always return 101 as id which can create conflicts
-     * in the key attribute in PostsComponent.vue's userPosts v-for.
-     *
-     * @param {none}
-     * @returns {String}
-     */
-    getNewPostId() {
-      const storagePosts = this.getItemFromLocalStorage("userPosts"); // get all user posts from local storage
-      // if posts exist then get the last post id, convert it to a number
-      // otherwise return 1000 as the first user created post id
-      if (storagePosts && storagePosts.length) {
-        const lastPostId = Number(storagePosts[storagePosts.length - 1].id); // gets the last post id
-        return String(lastPostId + 1); // increments and returns it
-      } else {
-        return "1000";
-      }
-    },
-
-    /**
-     * Function to update the userPosts property in local storage.
-     *
-     * @param {Object} post - contains information about the new post to create.
-     * @returns {void}
-     */
-    updatePostsInLocalStorage(post) {
-      const storagePosts = this.getItemFromLocalStorage("userPosts"); // get all user posts from local storage
-      // if posts exist then add the new post to the end
-      // otherwise set a new array in 'userPosts' with the new created post
-      if (storagePosts && storagePosts.length) {
-        storagePosts.push(post); // add the new post in the array
-        this.setItemInLocalStorage("userPosts", storagePosts); // set the update posts array in local storage
-      } else {
-        this.setItemInLocalStorage("userPosts", [post]);
-      }
-    },
+    ...mapActions(["createPost"]),
 
     /**
      * Function to handle create post submission.
@@ -142,11 +107,6 @@ export default {
         return;
       }
 
-      // post request headers
-      const headers = {
-        "Content-type": "application/json; charset=UTF-8",
-      };
-
       // newly created post
       const post = {
         title: this.title.value,
@@ -154,21 +114,10 @@ export default {
         userId: "1",
       };
 
-      try {
-        this.fetching = true; // sets fetching to true to show user that the data is being fetched
+      await this.createPost({ post });
 
-        const response = await API.createPost(post, headers); // makes an API request to backend to create a new post
-        response.data.id = this.getNewPostId(); // replace the returned '101' id
-        this.updatePostsInLocalStorage(response.data); // updates the userPosts in local storage
-
-        this.title.value = null; // sets form title input field to null
-        this.body.value = null; // sets form body textarea to null
-        this.fetching = false; // sets fetching to false to show user that another post is ready to be created
-      } catch (error) {
-        // show some error message to user here
-        console.log(error);
-        this.fetching = false; // sets fetching to false to show user that another post is ready to be created
-      }
+      this.title.value = null; // sets form title input field to null
+      this.body.value = null; // sets form body textarea to null
     },
   },
 };

@@ -5,6 +5,8 @@ import "@/assets/css/style.css";
 import App from "./App.vue";
 import router from "./router";
 
+import store from "./store";
+
 /**
  * This is a global custom directive that when applied to an input element will auto focus it
  * whenever that element is mounted to the DOM.
@@ -21,5 +23,6 @@ Vue.directive("focus", {
 
 new Vue({
   router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");

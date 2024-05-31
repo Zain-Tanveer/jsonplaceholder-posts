@@ -1,24 +1,20 @@
 <template>
   <div class="posts">
-    <div v-if="!posts.length" class="loading">Getting Posts...</div>
+    <div v-if="!allPosts.length && !postError" class="loading">Getting Posts...</div>
 
-    <div v-if="!posts.length && error" class="error">
-      {{ error }}
+    <div v-if="!allPosts.length && postError" class="error">
+      {{ postError }}
     </div>
 
-    <div v-if="userPosts.length" class="content">
-      <post-card v-for="post in userPosts" :key="post.id" :post="post" />
-    </div>
-
-    <div v-if="posts.length" class="content">
-      <post-card v-for="post in posts" :key="post.id" :post="post" />
+    <div v-if="allPosts.length" class="content">
+      <post-card v-for="post in allPosts" :key="post.id" :post="post" />
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapMutations, mapActions } from "vuex";
 import { LocalStorageMixin } from "@/mixins/UtilityMixins.js";
-import API from "@/services/API.js";
 
 export default {
   name: "posts-component",
@@ -37,51 +33,32 @@ export default {
    * @returns {void}
    */
   created() {
-    const storagePosts = this.getItemFromLocalStorage("posts"); // gets all posts from local storage
-    const storageUserPosts = this.getItemFromLocalStorage("userPosts"); // gets all user created posts from local storage
+    const posts = this.getItemFromLocalStorage("posts"); // gets all posts from local storage
 
-    // if posts exist then set the posts data property to local storage posts
-    if (storagePosts && storagePosts.length) {
-      this.posts = storagePosts;
+    // if posts exist then set the posts state property to local storage posts
+    // it commits a mutation which updates the 'posts' state property
+    if (posts && posts.length) {
+      this.SET_POSTS({ posts }); // committing a mutation
     } else {
       // fetches posts from the backend through api call
+      // dispatches the fetchPosts() action in posts.js store module
       this.fetchPosts();
-    }
-
-    // if user posts exist then set the userPosts data property to local storage posts
-    if (storageUserPosts && storageUserPosts.length) {
-      this.userPosts = storageUserPosts;
     }
   },
 
   data() {
     return {
-      error: null,
-      posts: [],
       userPosts: [],
     };
   },
 
-  methods: {
-    /**
-     * Function used to fetch posts from backend asynchronously
-     *
-     * @param {none}
-     * @returns {void}
-     */
-    async fetchPosts() {
-      try {
-        this.error = null; // sets the error property to null
-        const response = await API.getAllPosts(); // fetches all posts from backend using api
-        this.posts = [...response.data]; // sets the posts data property to the data in response
+  computed: {
+    ...mapGetters(["allPosts", "postError"]),
+  },
 
-        // updates the posts in local storage
-        this.setItemInLocalStorage("posts", this.posts);
-      } catch (error) {
-        // if an error exists then set the error property to the error message
-        this.error = error.message;
-      }
-    },
+  methods: {
+    ...mapMutations(["SET_POSTS"]),
+    ...mapActions(["fetchPosts"]),
   },
 };
 </script>

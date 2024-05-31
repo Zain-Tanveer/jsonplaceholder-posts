@@ -24,8 +24,13 @@ class AxiosAPI {
    * @param {Object} headers - any additional header needed to be passed as options
    * @returns {Promise<AxiosResponse>}
    */
-  createPost(data, headers) {
-    return this.API.post("/posts", data, { headers: headers });
+  createPost(data) {
+    // post request headers
+    const headers = {
+      "Content-type": "application/json; charset=UTF-8",
+    };
+
+    return this.API.post("/posts", data, { headers });
   }
 }
 
