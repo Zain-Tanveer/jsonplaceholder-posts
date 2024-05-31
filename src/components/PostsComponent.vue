@@ -33,8 +33,8 @@ export default {
    * 'created' lifecycle hook used to check if there are saved posts in
    * local storage, and also used to fetch posts from backend.
    *
-   * {param} (none)
-   * {return} (void)
+   * @param {none}
+   * @returns {void}
    */
   created() {
     const storagePosts = this.getItemFromLocalStorage("posts"); // gets all posts from local storage
@@ -66,8 +66,8 @@ export default {
     /**
      * Function used to fetch posts from backend asynchronously
      *
-     * {param} (none)
-     * {return} (void)
+     * @param {none}
+     * @returns {void}
      */
     async fetchPosts() {
       try {

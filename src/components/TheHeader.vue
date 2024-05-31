@@ -64,8 +64,8 @@ export default {
     /**
      * Filter to get only the initials of a property.
      *
-     * {param} (String) - The property left of the filter pipe ' | '
-     * {return} (String)
+     * @param {String} value - The property left of the filter pipe ' | '
+     * @returns {String}
      */
     initialsOnly(value) {
       if (!value) return "";
@@ -91,8 +91,8 @@ export default {
      * public page (i.e., the page requires authentication or not)
      * and render the header nav links accordingly.
      *
-     * {param} (none)
-     * {return} (Boolean)
+     * @param {none}
+     * @returns {Boolean}
      */
     isLoginView() {
       // checks if the route has a 'requiresAuth' property in meta tag
@@ -105,9 +105,8 @@ export default {
     /**
      * Computed property to get info about the current logged in user.
      *
-     *
-     * {param} (none)
-     * {return} (Object)
+     * @param {none}
+     * @returns {Object}
      */
     user() {
       // checks if the route has a 'requiresAuth' property in meta tag

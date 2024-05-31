@@ -66,8 +66,8 @@ export default {
     /**
      * Function to handle login form submission.
      *
-     * {param} (none)
-     * {return} (void)
+     * @param {none}
+     * @returns {void}
      */
     handleLogin() {
       this.username.error = null;

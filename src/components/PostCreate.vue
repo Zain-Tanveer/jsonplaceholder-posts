@@ -74,8 +74,8 @@ export default {
      * then set the text to 'Creating...' otherwise set it to 'Create'.
      * Used to show user that they have made a create request.
      *
-     * {param} (none)
-     * {return} (String)
+     * @param {none}
+     * @returns {String}
      */
     buttonText() {
       return this.fetching ? "Creating..." : "Create";
@@ -89,8 +89,8 @@ export default {
      * it will always return 101 as id which can create conflicts
      * in the key attribute in PostsComponent.vue's userPosts v-for.
      *
-     * {param} (none)
-     * {return} (String)
+     * @param {none}
+     * @returns {String}
      */
     getNewPostId() {
       const storagePosts = this.getItemFromLocalStorage("userPosts"); // get all user posts from local storage
@@ -107,8 +107,8 @@ export default {
     /**
      * Function to update the userPosts property in local storage.
      *
-     * {param} (Object) - post : contains information about the new post to create.
-     * {return} (void)
+     * @param {Object} post - contains information about the new post to create.
+     * @returns {void}
      */
     updatePostsInLocalStorage(post) {
       const storagePosts = this.getItemFromLocalStorage("userPosts"); // get all user posts from local storage
@@ -125,8 +125,8 @@ export default {
     /**
      * Function to handle create post submission.
      *
-     * {param} (none)
-     * {return} (void)
+     * @param {none}
+     * @returns {void}
      */
     async handleCreate() {
       // simple validation for empty values

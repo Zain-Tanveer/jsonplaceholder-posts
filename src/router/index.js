@@ -18,10 +18,10 @@ const router = new VueRouter({
        * This is a navigation guard. It is used to check whether the user has logged in
        * or not. If the user is logged in then the route will be redirected to /dashboard
        *
-       * {param} (Route) - the target Route Object being navigated to.
-       * {param} (Route) - the current route being navigated away from.
-       * {param} (NavigationGuardNext) - move on to the next hook in the pipeline
-       * {return} ()
+       * @param {Route} to - the target Route Object being navigated to.
+       * @param {Route} from - the current route being navigated away from.
+       * @param {NavigationGuardNext}  next - move on to the next hook in the pipeline
+       * @returns {void}
        */
       beforeEnter(to, from, next) {
         // getting the isLoggedIn variable from local storage
@@ -43,10 +43,10 @@ const router = new VueRouter({
        * This is a navigation guard. It is used to check whether the user has logged in
        * or not. If the user is logged in then the route will be redirected to /dashboard
        *
-       * {param} (Route) - the target Route Object being navigated to.
-       * {param} (Route) - the current route being navigated away from.
-       * {param} (NavigationGuardNext) - move on to the next hook in the pipeline
-       * {return} ()
+       * @param {Route} to - the target Route Object being navigated to.
+       * @param {Route} from - the current route being navigated away from.
+       * @param {NavigationGuardNext} next - move on to the next hook in the pipeline
+       * @returns {void}
        */
       beforeEnter(to, from, next) {
         // getting the isLoggedIn variable from local storage
@@ -90,10 +90,10 @@ const router = new VueRouter({
  * This is a global navigation guard. It is used to check whether the user is trying to access
  * a protected route without being logged in.
  *
- * {param} (Route) - the target Route Object being navigated to.
- * {param} (Route) - the current route being navigated away from.
- * {param} (NavigationGuardNext) - move on to the next hook in the pipeline
- * {return} (function)
+ * @param {Route} to - the target Route Object being navigated to.
+ * @param {Route} from - the current route being navigated away from.
+ * @param {NavigationGuardNext} next - move on to the next hook in the pipeline
+ * @returns {function}
  */
 router.beforeEach((to, from, next) => {
   // if the route has a 'requiresAuth' property in meta tag then

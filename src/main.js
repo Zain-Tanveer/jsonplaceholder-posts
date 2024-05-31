@@ -9,9 +9,9 @@ import router from "./router";
  * This is a global custom directive that when applied to an input element will auto focus it
  * whenever that element is mounted to the DOM.
  *
- * {param} (String) - name of the custom directive
- * {param} (any) - options provided i.e., custom directive hooks
- * {return} (void)
+ * @param {String} - name of the custom directive
+ * @param {any} - options provided i.e., custom directive hooks
+ * @returns {void}
  */
 Vue.directive("focus", {
   inserted: function (el) {

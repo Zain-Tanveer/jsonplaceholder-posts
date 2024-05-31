@@ -19,8 +19,8 @@ export default {
      * It checks to see the current name of the route and displays info accordingly.
      * It is display next to 'Dashboard' in template.
      *
-     * {param} (none)
-     * {return} (String)
+     * @param {none}
+     * @returns {String}
      */
     currentPage() {
       return this.$route.name === "AllPosts"
