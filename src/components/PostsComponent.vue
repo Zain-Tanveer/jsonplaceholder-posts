@@ -13,8 +13,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from "vuex";
-import { LocalStorageMixin } from "@/mixins/UtilityMixins.js";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "posts-component",
@@ -23,42 +22,29 @@ export default {
     PostCard: () => import("@/components/PostCard.vue"),
   },
 
-  mixins: [LocalStorageMixin],
-
   /**
    * 'created' lifecycle hook used to check if there are saved posts in
-   * local storage, and also used to fetch posts from backend.
+   * local storage, if not then call the fetchPosts() action.
    *
    * @param {none}
    * @returns {void}
    */
   created() {
-    const posts = this.getItemFromLocalStorage("posts"); // gets all posts from local storage
-
-    // if posts exist then set the posts state property to local storage posts
+    // if posts don't exist then call the fetchPosts() action from posts vuex module.
     // it commits a mutation which updates the 'posts' state property
-    if (posts && posts.length) {
-      this.SET_POSTS({ posts }); // committing a mutation
-    } else {
-      // fetches posts from the backend through api call
-      // dispatches the fetchPosts() action in posts.js store module
+    if (!this.allPosts || !this.allPosts.length) {
       this.fetchPosts();
     }
   },
 
-  data() {
-    return {
-      userPosts: [],
-    };
-  },
-
   computed: {
     ...mapGetters(["allPosts", "postError"]),
+    // ...mapGetters("postsModule", ["allPosts", "postError"]),
   },
 
   methods: {
-    ...mapMutations(["SET_POSTS"]),
     ...mapActions(["fetchPosts"]),
+    // ...mapActions("postsModule", ["fetchPosts"]),
   },
 };
 </script>

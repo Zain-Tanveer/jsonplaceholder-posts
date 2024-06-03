@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
-import posts from "./modules/posts";
+import postsModule from "./modules/posts";
+import { postsLocal } from "./plugins/PostsPersist.js";
 
 Vue.use(Vuex);
 
@@ -9,6 +10,8 @@ export default new Vuex.Store({
   strict: true,
 
   modules: {
-    posts,
+    postsModule,
   },
+
+  plugins: [postsLocal.plugin],
 });

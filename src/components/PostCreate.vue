@@ -40,7 +40,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { LocalStorageMixin } from "@/mixins/UtilityMixins.js";
 
 import BaseInput from "./BaseInput.vue";
 import BaseButton from "./BaseButton.vue";
@@ -50,8 +49,6 @@ export default {
     BaseInput,
     BaseButton,
   },
-
-  mixins: [LocalStorageMixin],
 
   data() {
     return {
@@ -70,6 +67,7 @@ export default {
 
   computed: {
     ...mapGetters(["isFetching", "postErrors"]),
+    // ...mapGetters("postsModule", ["isFetching", "postErrors"]),
 
     /**
      * Computed property to set the text of button. If data is being fetched
@@ -86,6 +84,7 @@ export default {
 
   methods: {
     ...mapActions(["createPost"]),
+    // ...mapActions("postsModule", ["createPost"]),
 
     /**
      * Function to handle create post submission.

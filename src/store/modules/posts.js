@@ -1,5 +1,5 @@
 import API from "@/services/API.js";
-import { getItemFromLocalStorage, setItemInLocalStorage } from "@/utils/LocalStorage";
+import { getItemFromLocalStorage } from "@/utils/LocalStorage";
 
 const state = {
   posts: [],
@@ -46,7 +46,6 @@ const actions = {
       commit("SET_ERROR", null); // sets the error state to null
       const response = await API.getAllPosts(); // fetches all posts from backend using api
       commit("SET_POSTS", { posts: response.data }); // sets the posts array with response
-      setItemInLocalStorage("posts", response.data); // sets the fetched posts in local storage
     } catch (error) {
       commit("SET_ERROR", error.message);
     }
@@ -59,7 +58,7 @@ const actions = {
    * @param {Object} context - An object containing the same set of methods/properties available on the store instance
    * @returns {none}
    */
-  async createPost({ commit, state }, payload) {
+  async createPost({ commit }, payload) {
     try {
       commit("SET_ERROR", null); // sets the error state to null
       commit("SET_FETCHING", true); // sets the fetching state to true
@@ -69,7 +68,6 @@ const actions = {
 
       commit("ADD_POST", { post: response.data }); // add the newly created post
       commit("SET_FETCHING", false); // sets the fetching state to false
-      setItemInLocalStorage("posts", state.posts); // sets the newly updated posts[] array in local storage
     } catch (error) {
       commit("SET_FETCHING", false); // sets the fetching state to false
       commit("SET_ERROR", error.message);
@@ -124,6 +122,7 @@ const mutations = {
 };
 
 export default {
+  // namespaced: true,
   state,
   getters,
   actions,
